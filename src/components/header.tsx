@@ -13,16 +13,18 @@ export default async function Header() {
   let authContent: React.ReactNode;
   if (session?.user) {
     authContent = (
-      <Popover placement="bottom-end">
+      <Popover placement="bottom-end" color="foreground">
         <PopoverTrigger>
           <Avatar src={session.user.image || ""} />
         </PopoverTrigger>
         <PopoverContent>
-          <form action={actions.signOut}>
-            <Button type="submit" color="secondary" variant="ghost">
-              Sign Out
-            </Button>
-          </form>
+          <div className="p-4">
+            <form action={actions.signOut}>
+              <Button type="submit" color="secondary" variant="ghost">
+                Sign Out
+              </Button>
+            </form>
+          </div>
         </PopoverContent>
       </Popover>
     );
