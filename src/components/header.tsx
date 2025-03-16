@@ -3,27 +3,45 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Avatar } from "@heroui/avatar";
+import { Popover, PopoverTrigger, PopoverContent } from "@heroui/popover";
 import { auth } from "@/auth";
-import React from "react";
+import * as actions from "@/actions";
 
 export default async function Header() {
   const session = await auth();
 
   let authContent: React.ReactNode;
   if (session?.user) {
-    authContent = <Avatar src={session.user.image || ""} />;
+    authContent = (
+      <Popover placement="bottom-end">
+        <PopoverTrigger>
+          <Avatar src={session.user.image || ""} />
+        </PopoverTrigger>
+        <PopoverContent>
+          <form action={actions.signOut}>
+            <Button type="submit" color="secondary" variant="ghost">
+              Sign Out
+            </Button>
+          </form>
+        </PopoverContent>
+      </Popover>
+    );
   } else {
     authContent = (
       <div className="flex space-x-4">
         <NavbarItem>
-          <Button type="submit" color="secondary" variant="bordered">
-            Sign In
-          </Button>
+          <form action={actions.signIn}>
+            <Button type="submit" color="secondary" variant="bordered">
+              Sign In
+            </Button>
+          </form>
         </NavbarItem>
         <NavbarItem>
-          <Button type="submit" color="primary" variant="flat">
-            Sign Up
-          </Button>
+          <form action={actions.signIn}>
+            <Button type="submit" color="primary" variant="flat">
+              Sign Up
+            </Button>
+          </form>
         </NavbarItem>
       </div>
     );
