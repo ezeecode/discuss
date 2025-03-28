@@ -68,7 +68,10 @@ export async function createTopic(
       },
     });
   } catch (error: unknown) {
-    if (error instanceof Error && error.message.toLowerCase().includes("unique constraint")) {
+    if (
+      error instanceof Error &&
+      error.message.toLowerCase().includes("unique constraint")
+    ) {
       return {
         errors: {
           _form: ["A topic with that title already exists"],
