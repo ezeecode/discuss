@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, startTransition } from "react";
+import { useActionState, startTransition } from "react";
 
 import { Button } from "@heroui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover";
