@@ -1,3 +1,4 @@
+import CommentCreateForm from "@/components/comments/comment-create-form";
 import PostShow from "@/components/posts/post-show";
 import paths from "@/paths";
 import Link from "next/link";
@@ -15,6 +16,7 @@ export default async function PostShowPage({ params }: PostShowPageProps) {
       </h1>
       <div className="bg-white shadow-md rounded-lg p-4 mt-8">
         <PostShow postId={postId} />
+        <CommentCreateForm slug={slug} postId={postId} />
       </div>
     </div>
   );
