@@ -16,7 +16,7 @@ export default async function PostShowPage({ params }: PostShowPageProps) {
       </h1>
       <div className="bg-white shadow-md rounded-lg p-4 mt-8">
         <PostShow postId={postId} />
-        <CommentCreateForm slug={slug} postId={postId} />
+        <CommentCreateForm postId={postId} />
       </div>
     </div>
   );

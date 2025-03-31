@@ -2,12 +2,10 @@
 
 import { Comment } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import paths from "@/paths";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { db } from "@/db";
-
 
 const CommentSchema = z.object({
   content: z
@@ -25,10 +23,10 @@ interface CreateCommentFormState {
     content?: string[];
     _form?: string[];
   };
+  success?: boolean;
 }
 
 export async function createComment(
-  slug: string,
   postId: string,
   formState: CreateCommentFormState,
   formdata: FormData
@@ -81,12 +79,10 @@ export async function createComment(
     }
   }
 
-  // TODO : revalidate the post show page
   revalidatePath(paths.postShow("slug", "postId"));
-  redirect(paths.postShow(slug, postId)); // Redirect to the new post page
 
-//   return {
-//     errors: {},
-//   };
-
+  return {
+    errors: {},
+    success: true,
+  };
 }

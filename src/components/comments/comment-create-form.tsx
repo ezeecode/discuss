@@ -1,31 +1,48 @@
 "use client";
 
 import { Button, Textarea } from "@heroui/react";
-import { useState, useActionState, startTransition } from "react";
+import {
+  useState,
+  useActionState,
+  startTransition,
+  useEffect,
+  useRef,
+} from "react";
 import { createComment } from "@/actions";
 import FormButton from "../common/form-button";
 
 interface CommentCreateFormProps {
-  slug: string;
   postId: string;
 }
 
-export default function CommentCreateForm({ slug, postId }: CommentCreateFormProps) {
+export default function CommentCreateForm({ postId }: CommentCreateFormProps) {
   // have a state variable to track if the form is open or closed
   const [open, setOpen] = useState(false);
+
+  const formRef = useRef<HTMLFormElement>(null);
 
   // function to toggle the open state
   const handleToggle = () => {
     setOpen(!open);
   };
 
+  // useActionState to handle form submission
   const [formState, action, isPending] = useActionState(
-    createComment.bind(null, slug, postId),
+    createComment.bind(null, postId),
     {
       errors: {},
     }
   );
 
+  // clear the form when submitted
+  useEffect(() => {
+    if (formState.success) {
+      formRef.current?.reset();
+      setOpen(false);
+    }
+  }, [formState]);
+
+  // handle form submission
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -45,6 +62,7 @@ export default function CommentCreateForm({ slug, postId }: CommentCreateFormPro
           className="flex flex-col"
           action={action}
           onSubmit={handleSubmit}
+          ref={formRef}
           noValidate
         >
           <Textarea
