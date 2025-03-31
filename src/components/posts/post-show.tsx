@@ -1,11 +1,11 @@
 import { db } from "@/db";
+import { notFound } from "next/navigation";
 
 interface PostShowProps {
-  params: Promise<{ slug: string; postId: string }>;
+  postId: string;
 }
 
-export default async function PostShow({ params }: PostShowProps) {
-  const { slug, postId } = await params;
+export default async function PostShow({ postId }: PostShowProps) {
 
   // Fetch the post from the database
   const post = await db.post.findUnique({
@@ -13,7 +13,6 @@ export default async function PostShow({ params }: PostShowProps) {
       id: postId,
     },
     include: {
-      topic: { select: { slug: true } },
       user: { select: { name: true } },
       _count: {
         select: { comments: true },
@@ -22,7 +21,7 @@ export default async function PostShow({ params }: PostShowProps) {
   });
 
   if (!post) {
-    return <div>Post not found</div>;
+    notFound();
   }
 
   return (
