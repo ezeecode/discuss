@@ -13,9 +13,10 @@ import FormButton from "../common/form-button";
 
 interface CommentCreateFormProps {
   postId: string;
+  parentId?: string;
 }
 
-export default function CommentCreateForm({ postId }: CommentCreateFormProps) {
+export default function CommentCreateForm({ postId, parentId }: CommentCreateFormProps) {
   // have a state variable to track if the form is open or closed
   const [open, setOpen] = useState(false);
 
@@ -28,7 +29,7 @@ export default function CommentCreateForm({ postId }: CommentCreateFormProps) {
 
   // useActionState to handle form submission
   const [formState, action, isPending] = useActionState(
-    createComment.bind(null, postId),
+    createComment.bind(null, {postId, parentId}),
     {
       errors: {},
     }
@@ -53,7 +54,12 @@ export default function CommentCreateForm({ postId }: CommentCreateFormProps) {
 
   return (
     <div>
-      <Button variant="light" className="underline" onPress={handleToggle}>
+      <Button
+        variant="light"
+        className="underline"
+        onPress={handleToggle}
+        size="sm"
+      >
         {open ? "Collapse" : "Reply"}
       </Button>
 
@@ -68,7 +74,7 @@ export default function CommentCreateForm({ postId }: CommentCreateFormProps) {
           <Textarea
             name="content"
             id="content"
-            className="rounded p-4"
+            className="rounded p-4 w-auto"
             placeholder="Write your comment here..."
             rows={4}
             isInvalid={!!formState.errors.content}
@@ -81,7 +87,9 @@ export default function CommentCreateForm({ postId }: CommentCreateFormProps) {
             </div>
           )}
 
-          <FormButton isLoading={isPending}>Submit</FormButton>
+          <div className="w-20 mx-4">
+            <FormButton isLoading={isPending}>Submit</FormButton>
+          </div>
         </form>
       </div>
     </div>
