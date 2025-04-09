@@ -14,12 +14,12 @@ export default async function PostShowPage({ params }: PostShowPageProps) {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-2 border rounded-full p-4 bg-green-200 text-center">
-        <Link href={paths.topicShow(slug)}>{slug}</Link>
+        <Link href={paths.topicShow(slug)}> {"<< "} {slug}</Link>
       </h1>
       <div className="bg-white shadow-md rounded-lg p-4 mt-8">
         <PostShow postId={postId} />
         <CommentCreateForm postId={postId} />
-        <CommentList fetchData={() => fetchCommentsByPostId(postId)} />
+        <CommentList postId={postId} />
       </div>
     </div>
   );
